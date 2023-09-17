@@ -1,0 +1,8 @@
+{
+	"SourceFiles": [
+		"D:\\Code Projects\\UnrealTraining\\UnrealExploration\\Unreal_CodeTesting\\Source\\Unreal_CodeTesting\\Unreal_CodeTesting.Build.cs",
+		"D:\\Code Projects\\UnrealTraining\\UnrealExploration\\Unreal_CodeTesting\\Source\\Unreal_CodeTesting.Target.cs",
+		"D:\\Code Projects\\UnrealTraining\\UnrealExploration\\Unreal_CodeTesting\\Source\\Unreal_CodeTestingEditor.Target.cs"
+	],
+	"EngineVersion": "5.3.0"
+}

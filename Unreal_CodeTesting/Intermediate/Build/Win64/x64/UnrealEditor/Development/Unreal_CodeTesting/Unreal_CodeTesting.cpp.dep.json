@@ -1,0 +1,14 @@
+{
+    "Version": "1.2",
+    "Data": {
+        "Source": "d:\\code projects\\unrealtraining\\unrealexploration\\unreal_codetesting\\source\\unreal_codetesting\\unreal_codetesting.cpp",
+        "ProvidedModule": "",
+        "PCH": "d:\\code projects\\unrealtraining\\unrealexploration\\unreal_codetesting\\intermediate\\build\\win64\\x64\\unreal_codetestingeditor\\development\\engine\\sharedpch.engine.cpp20.h.pch",
+        "Includes": [
+            "d:\\code projects\\unrealtraining\\unrealexploration\\unreal_codetesting\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\unreal_codetesting\\definitions.unreal_codetesting.h",
+            "d:\\code projects\\unrealtraining\\unrealexploration\\unreal_codetesting\\source\\unreal_codetesting\\unreal_codetesting.h"
+        ],
+        "ImportedModules": [],
+        "ImportedHeaderUnits": []
+    }
+}

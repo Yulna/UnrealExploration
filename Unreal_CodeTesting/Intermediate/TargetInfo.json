@@ -1,0 +1,14 @@
+{
+	"Targets": [
+		{
+			"Name": "Unreal_CodeTesting",
+			"Path": "..\\Source\\Unreal_CodeTesting.Target.cs",
+			"Type": "Game"
+		},
+		{
+			"Name": "Unreal_CodeTestingEditor",
+			"Path": "..\\Source\\Unreal_CodeTestingEditor.Target.cs",
+			"Type": "Editor"
+		}
+	]
+}
