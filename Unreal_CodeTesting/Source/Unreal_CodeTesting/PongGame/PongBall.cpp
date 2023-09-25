@@ -13,10 +13,12 @@ APongBall::APongBall()
 
 	BallMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("BallMesh"));
 	BallMesh->SetupAttachment(RootComponent);
-	BallMesh->OnComponentHit.AddUniqueDynamic(this, &APongBall::OnComponentHit);
+	
+	BallMesh->OnComponentBeginOverlap.AddUniqueDynamic(this, &APongBall::OnComponentBeginOverlap);
+	//BallMesh->OnComponentHit.AddUniqueDynamic(this, &APongBall::OnComponentHit);
 
 	BallMesh->SetCollisionEnabled(ECollisionEnabled::Type::QueryAndPhysics);
-	BallMesh->SetCollisionProfileName(FName(TEXT("BlockAll")));
+	BallMesh->SetCollisionProfileName(FName(TEXT("OverlapAll")));
 }
 
 // Called when the game starts or when spawned
@@ -50,7 +52,14 @@ void APongBall::Tick(float DeltaTime)
 
 void APongBall::OnComponentHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
 {
-	GEngine->AddOnScreenDebugMessage(-1, 999.0f, FColor::Silver, TEXT("Hit detected"));
+	//GEngine->AddOnScreenDebugMessage(-1, 999.0f, FColor::Silver, TEXT("Bouncing"));
+
+	Direction.X *= -1;
+}
+
+void APongBall::OnComponentBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+{
+
 
 	Direction.X *= -1;
 }

@@ -9,5 +9,7 @@ public class Unreal_CodeTesting : ModuleRules
 		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
 
 		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "EnhancedInput" });
-	}
+
+        bLegacyPublicIncludePaths = true;
+    }
 }
