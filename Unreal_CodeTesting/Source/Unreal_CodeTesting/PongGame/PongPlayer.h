@@ -27,8 +27,13 @@ public:
 	UPROPERTY(VisibleAnywhere)
 	UStaticMeshComponent* PaddleMesh = nullptr;
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
+	int PlayerIndex = 0;
+
 	UPROPERTY(EditAnywhere, Category = "GameData")
 	float Speed = 1.0f;
+
+
 
 public:
 	// Sets default values for this pawn's properties

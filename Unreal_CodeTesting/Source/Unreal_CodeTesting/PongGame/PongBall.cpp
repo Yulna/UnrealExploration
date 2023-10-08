@@ -14,11 +14,13 @@ APongBall::APongBall()
 	BallMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("BallMesh"));
 	BallMesh->SetupAttachment(RootComponent);
 	
-	BallMesh->OnComponentBeginOverlap.AddUniqueDynamic(this, &APongBall::OnComponentBeginOverlap);
-	//BallMesh->OnComponentHit.AddUniqueDynamic(this, &APongBall::OnComponentHit);
+	//BallMesh->OnComponentBeginOverlap.AddUniqueDynamic(this, &APongBall::OnComponentBeginOverlap);
+	BallMesh->OnComponentHit.AddUniqueDynamic(this, &APongBall::OnComponentHit);
 
 	BallMesh->SetCollisionEnabled(ECollisionEnabled::Type::QueryAndPhysics);
-	BallMesh->SetCollisionProfileName(FName(TEXT("OverlapAll")));
+	//BallMesh->SetCollisionProfileName(FName(TEXT("OverlapAll")));
+	BallMesh->SetCollisionProfileName(FName(TEXT("BlockAll")));
+
 }
 
 // Called when the game starts or when spawned
@@ -53,13 +55,35 @@ void APongBall::Tick(float DeltaTime)
 void APongBall::OnComponentHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
 {
 	//GEngine->AddOnScreenDebugMessage(-1, 999.0f, FColor::Silver, TEXT("Bouncing"));
+	GEngine->AddOnScreenDebugMessage(-1, 999.0f, FColor::Yellow, TEXT("Bouncing"));
 
-	Direction.X *= -1;
+	//GEngine->AddOnScreenDebugMessage(-1, 999.0f, FColor::Blue, FString::Printf(TEXT("Normals: x-%.8f y-%.8f z-%.8f"), Hit.Normal.X, Hit.Normal.Y, Hit.Normal.Z));
+	//GEngine->AddOnScreenDebugMessage(-1, 999.0f, FColor::Blue, FString::Printf(TEXT("NormalImpulse: x-%.8f y-%.8f z-%.8f"), NormalImpulse.X, NormalImpulse.Y, NormalImpulse.Z));
+
+	
+
+	//Direction.X *= -1;
 }
 
 void APongBall::OnComponentBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
 
+
+	GEngine->AddOnScreenDebugMessage(-1, 999.0f, FColor::Purple, TEXT("Bouncing"));
+
+	if (OtherActor->Tags.Contains(FName("Player")))
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 999.0f, FColor::Red, TEXT("Player hit"));
+	}
+	
+	if (OtherActor->Tags.Contains(FName("Goal")))
+	{
+
+	}
+
+
+	//GEngine->AddOnScreenDebugMessage(-1, 999.0f, FColor::Blue, FString::Printf(TEXT("Normals: x-%.8f y-%.8f z-%.8f"), SweepResult.Normal.X, SweepResult.Normal.Y, SweepResult.Normal.Z));
+	//Direction = SweepResult.Normal;
 
 	Direction.X *= -1;
 }

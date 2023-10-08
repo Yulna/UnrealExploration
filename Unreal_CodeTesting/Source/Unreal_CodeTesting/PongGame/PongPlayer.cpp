@@ -24,14 +24,53 @@ APongPlayer::APongPlayer()
 void APongPlayer::BeginPlay()
 {
 	Super::BeginPlay();
+	
 
+	APlayerController* PlayerController = nullptr;
+
+	TArray<class ULocalPlayer*> LocalPlayers = GetGameInstance()->GetLocalPlayers();
+
+	
+	if (LocalPlayers.Num() <= PlayerIndex)
+	{
+		FString Error;
+		ULocalPlayer* LocalPlayer = GetGameInstance()->CreateLocalPlayer(FGenericPlatformMisc::GetPlatformUserForUserIndex(PlayerIndex), Error, true);
+
+
+		PlayerController = LocalPlayer->PlayerController;
+
+	}
+	else 
+	{
+		PlayerController = GetGameInstance()->GetLocalPlayers()[PlayerIndex]->PlayerController;
+	}
+
+	
+
+	PlayerController->Possess(this);
+
+
+	PlayerController = Cast<APlayerController>(Controller);
+
+	if (PlayerController != nullptr)
+	{		
+
+		if (UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PlayerController->GetLocalPlayer()))
+		{
+			GEngine->AddOnScreenDebugMessage(-1, 999.0f, FColor::Silver, FString::Printf(TEXT("APongPlayer::Assigning input for player:%i"), PlayerIndex));
+			Subsystem->AddMappingContext(PongMappingContext, 0);
+		}
+	}
+
+
+	/*
 	if (APlayerController* PlayerController = Cast<APlayerController>(Controller))
 	{
 		if (UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PlayerController->GetLocalPlayer()))
 		{
 			Subsystem->AddMappingContext(PongMappingContext, 0);
 		}
-	}
+	}*/
 	
 }
 
@@ -45,13 +84,11 @@ void APongPlayer::Tick(float DeltaTime)
 // Called to bind functionality to input
 void APongPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
-	//Super::SetupPlayerInputComponent(PlayerInputComponent);
-	GEngine->AddOnScreenDebugMessage(-1, 999.0f, FColor::Silver, TEXT("inputing"));
+	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
 	if (UEnhancedInputComponent* EnhancedInputComponent = Cast<UEnhancedInputComponent>(PlayerInputComponent))
 	{
-		GEngine->AddOnScreenDebugMessage(-1, 999.0f, FColor::Silver, TEXT("inputing working"));
-
+		
 		EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &APongPlayer::Move);
 	}
 }
@@ -63,9 +100,9 @@ void APongPlayer::Move(const FInputActionValue& Value)
 
 	if (Controller != nullptr)
 	{
-		GEngine->AddOnScreenDebugMessage(-1, 999.0f, FColor::Silver, FString::Printf(TEXT("APongPlayer::MovementInput - Move value:%.1f"), MovementVector.X));
+		//GEngine->AddOnScreenDebugMessage(-1, 999.0f, FColor::Silver, FString::Printf(TEXT("APongPlayer::MovementInput - Move value:%.1f"), MovementVector.X));
 
-		AddActorWorldOffset(FVector::ForwardVector * MovementVector.X * Speed);
+		AddActorWorldOffset(FVector::ForwardVector *	 MovementVector.X * Speed);
 	}
 
 }
