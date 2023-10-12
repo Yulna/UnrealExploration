@@ -74,6 +74,8 @@ void APongBall::OnComponentBeginOverlap(UPrimitiveComponent* OverlappedComponent
 	if (OtherActor->Tags.Contains(FName("Player")))
 	{
 		GEngine->AddOnScreenDebugMessage(-1, 999.0f, FColor::Red, TEXT("Player hit"));
+		Direction.Y *= -1;
+
 	}
 	
 	if (OtherActor->Tags.Contains(FName("Goal")))

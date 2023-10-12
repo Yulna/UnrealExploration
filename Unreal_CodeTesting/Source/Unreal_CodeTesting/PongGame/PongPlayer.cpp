@@ -9,6 +9,8 @@
 #include "EnhancedInputSubsystems.h"
 #include "InputActionValue.h"
 
+#include "Kismet/GameplayStatics.h"
+
 // Sets default values
 APongPlayer::APongPlayer()
 {
@@ -26,45 +28,56 @@ void APongPlayer::BeginPlay()
 	Super::BeginPlay();
 	
 
-	APlayerController* PlayerController = nullptr;
 
-	TArray<class ULocalPlayer*> LocalPlayers = GetGameInstance()->GetLocalPlayers();
-
+	//APlayerController* PlayerController = nullptr;
 	
+
+
+	//TArray<class ULocalPlayer*> LocalPlayers = GetGameInstance()->GetLocalPlayers();
+
+	/*
 	if (LocalPlayers.Num() <= PlayerIndex)
 	{
+
 		FString Error;
 		ULocalPlayer* LocalPlayer = GetGameInstance()->CreateLocalPlayer(FGenericPlatformMisc::GetPlatformUserForUserIndex(PlayerIndex), Error, true);
-
-
 		PlayerController = LocalPlayer->PlayerController;
 
+
+		GEngine->AddOnScreenDebugMessage(-1, 999.0f, FColor::Green, FString::Printf(TEXT("APongPlayer::Creating player:%i"), PlayerIndex));
+
+		UE_LOG(LogTemp, Warning, TEXT("APlayer::Error %s"), *Error);
 	}
 	else 
 	{
 		PlayerController = GetGameInstance()->GetLocalPlayers()[PlayerIndex]->PlayerController;
 	}
+	*/
+	/*
+	if (GetGameInstance()->GetLocalPlayers().Num() > PlayerIndex)
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 999.0f, FColor::Cyan , FString::Printf(TEXT("APongPlayer::Getting player")));
 
-	
+		PlayerController = GetGameInstance()->GetLocalPlayers()[PlayerIndex]->PlayerController;
+	}*/
 
-	PlayerController->Possess(this);
+	/*PlayerController = Cast<APlayerController>(Controller);
 
-
-	PlayerController = Cast<APlayerController>(Controller);
 
 	if (PlayerController != nullptr)
 	{		
+		PlayerController->Possess(this);
 
 		if (UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PlayerController->GetLocalPlayer()))
 		{
-			GEngine->AddOnScreenDebugMessage(-1, 999.0f, FColor::Silver, FString::Printf(TEXT("APongPlayer::Assigning input for player:%i"), PlayerIndex));
+			GEngine->AddOnScreenDebugMessage(-1, 999.0f, FColor::Green, FString::Printf(TEXT("APongPlayer::Assigning input for player:%i"), PlayerIndex));
 			Subsystem->AddMappingContext(PongMappingContext, 0);
 		}
-	}
+	}*/
 
 
 	/*
-	if (APlayerController* PlayerController = Cast<APlayerController>(Controller))
+	//if (APlayerController* PlayerController = Cast<APlayerController>(Controller))
 	{
 		if (UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PlayerController->GetLocalPlayer()))
 		{
