@@ -55,7 +55,7 @@ void APongBall::Tick(float DeltaTime)
 void APongBall::OnComponentHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
 {
 	//GEngine->AddOnScreenDebugMessage(-1, 999.0f, FColor::Silver, TEXT("Bouncing"));
-	GEngine->AddOnScreenDebugMessage(-1, 999.0f, FColor::Yellow, TEXT("Bouncing"));
+	GEngine->AddOnScreenDebugMessage(-1, 1.0f, FColor::Yellow, TEXT("Bouncing"));
 
 	//GEngine->AddOnScreenDebugMessage(-1, 999.0f, FColor::Blue, FString::Printf(TEXT("Normals: x-%.8f y-%.8f z-%.8f"), Hit.Normal.X, Hit.Normal.Y, Hit.Normal.Z));
 	//GEngine->AddOnScreenDebugMessage(-1, 999.0f, FColor::Blue, FString::Printf(TEXT("NormalImpulse: x-%.8f y-%.8f z-%.8f"), NormalImpulse.X, NormalImpulse.Y, NormalImpulse.Z));
@@ -69,11 +69,11 @@ void APongBall::OnComponentBeginOverlap(UPrimitiveComponent* OverlappedComponent
 {
 
 
-	GEngine->AddOnScreenDebugMessage(-1, 999.0f, FColor::Purple, TEXT("Bouncing"));
+	GEngine->AddOnScreenDebugMessage(-1, 1.0f, FColor::Purple, TEXT("Bouncing"));
 
 	if (OtherActor->Tags.Contains(FName("Player")))
 	{
-		GEngine->AddOnScreenDebugMessage(-1, 999.0f, FColor::Red, TEXT("Player hit"));
+		GEngine->AddOnScreenDebugMessage(-1, 1.0f, FColor::Red, TEXT("Player hit"));
 		Direction.Y *= -1;
 
 	}

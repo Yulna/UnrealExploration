@@ -27,11 +27,11 @@ void APongGameMode::BeginPlay()
 		constexpr bool bSpawnPlayerController = true;
 		APlayerController* NewPlayerController = UGameplayStatics::CreatePlayer(this, Index, bSpawnPlayerController);
 
-		GEngine->AddOnScreenDebugMessage(-1, 999.0f, FColor::Emerald, FString::Printf(TEXT("GameMode::Creating new controller")));
+		GEngine->AddOnScreenDebugMessage(-1, 3.0f, FColor::Emerald, FString::Printf(TEXT("APongGamemode::Creating new controller")));
 
 		
 
-		UE_LOG(LogTemp, Warning, TEXT("GameMode::Creating new controller"));
+		UE_LOG(LogTemp, Warning, TEXT("APongGamemode::Creating new controller"));
 	}
 	
 
@@ -42,7 +42,7 @@ void APongGameMode::BeginPlay()
 
 	for (int32 i = 0; i < PlayerStarts.Num(); i++)
 	{
-		GEngine->AddOnScreenDebugMessage(-1, 999.0f, FColor::Cyan, FString::Printf(TEXT("APongPlayer::Creating new players:%i"), i));
+		GEngine->AddOnScreenDebugMessage(-1, 3.0f, FColor::Cyan, FString::Printf(TEXT("APongGamemode::Creating new players:%i"), i));
 
 		FVector Location = PlayerStarts[i]->GetTransform().GetLocation();
 		FRotator Rotator = PlayerStarts[i]->GetTransform().Rotator();
@@ -59,7 +59,9 @@ void APongGameMode::BeginPlay()
 
 			if (UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PlayerController->GetLocalPlayer()))
 			{
-				GEngine->AddOnScreenDebugMessage(-1, 999.0f, FColor::Cyan, FString::Printf(TEXT("APongPlayer::Assigning input for player:%i"), i));
+				GEngine->AddOnScreenDebugMessage(-1, 3.0f, FColor::Cyan, FString::Printf(TEXT("APongGamemode::Assigning input for player:%i"), i));
+
+	
 
 				if (i == 0)
 				{

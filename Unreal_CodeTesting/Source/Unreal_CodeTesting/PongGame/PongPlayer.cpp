@@ -115,7 +115,7 @@ void APongPlayer::Move(const FInputActionValue& Value)
 	{
 		//GEngine->AddOnScreenDebugMessage(-1, 999.0f, FColor::Silver, FString::Printf(TEXT("APongPlayer::MovementInput - Move value:%.1f"), MovementVector.X));
 
-		AddActorWorldOffset(FVector::ForwardVector *	 MovementVector.X * Speed);
+		AddActorWorldOffset(FVector::ForwardVector * MovementVector.X * Speed);
 	}
 
 }
