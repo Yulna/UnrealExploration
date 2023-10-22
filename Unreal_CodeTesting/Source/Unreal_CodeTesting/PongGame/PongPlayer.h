@@ -33,6 +33,8 @@ public:
 	UPROPERTY(EditAnywhere, Category = "GameData")
 	float Speed = 1.0f;
 
+	UPROPERTY(EditAnywhere, Category = "GameData")
+	float MaxMove = 100.0f;
 
 
 public:

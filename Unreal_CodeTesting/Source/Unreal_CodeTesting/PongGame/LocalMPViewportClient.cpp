@@ -13,7 +13,7 @@
 
 bool ULocalMPViewportClient::InputKey(const FInputKeyEventArgs& InEventArgs)
 {
-	
+	//--------------------------
 	if (IgnoreInput() || InEventArgs.IsGamepad() || InEventArgs.Key.IsMouseButton())
 	{
 		return Super::InputKey(InEventArgs);
@@ -25,29 +25,23 @@ bool ULocalMPViewportClient::InputKey(const FInputKeyEventArgs& InEventArgs)
 
 		bool bRetVal = false;
 
+		bRetVal = Super::InputKey(InEventArgs);
 
 		
-		for (int32 i = 0; i < Numplayers; i++)
+		//Need to propagate the same event to controllers after the first one
+		//First one is handled by supper as controller 0 is from input keyboard
+		//Supper gets controllers from inputs so it won't get the other controllers unless we modify it
+		for (int32 i = 1; i < Numplayers; i++)
 		{
 			ULocalPlayer* const TargetPlayer = GEngine->GetLocalPlayerFromControllerId(this, i);
 
 			if (TargetPlayer && TargetPlayer->PlayerController)
 			{
-				TargetPlayer->PlayerController->InputKey(FInputKeyParams(InEventArgs.Key, InEventArgs.Event, static_cast<double>(InEventArgs.AmountDepressed), InEventArgs.IsGamepad(), InEventArgs.InputDevice));
+				bRetVal = TargetPlayer->PlayerController->InputKey(FInputKeyParams(InEventArgs.Key, InEventArgs.Event, static_cast<double>(InEventArgs.AmountDepressed), InEventArgs.IsGamepad(), InEventArgs.InputDevice)) || bRetVal;
 			}
 
-		}
-		
-
-		
-		/*for (int32 i = 0; i < Numplayers; i++)
-		{
-			FInputKeyEventArgs PropInEventArgs = InEventArgs;
-			PropInEventArgs.ControllerId = i;
-			
-
-			bRetVal = Super::InputKey(PropInEventArgs) || bRetVal;
-		}*/
+		}	
+	
 		
 		return bRetVal;
 	}	

@@ -57,11 +57,9 @@ void APongPlayer::Move(const FInputActionValue& Value)
 	{
 		//GEngine->AddOnScreenDebugMessage(-1, 999.0f, FColor::Silver, FString::Printf(TEXT("APongPlayer::MovementInput - Move value:%.1f"), MovementVector.X));
 
-		if ((this->GetActorLocation().X + MovementVector.X * Speed) < MaxMove &&
-			(this->GetActorLocation().X + MovementVector.X * Speed) > -MaxMove)
-		{
-			AddActorWorldOffset(FVector::ForwardVector * MovementVector.X * Speed);
-		}
+		//if ( this->GetActorLocation().X  )
+
+		AddActorWorldOffset(FVector::ForwardVector * MovementVector.X * Speed);
 	}
 
 }
