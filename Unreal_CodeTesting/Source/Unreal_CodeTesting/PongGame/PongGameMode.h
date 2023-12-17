@@ -8,6 +8,7 @@
 
 class UInputMappingContext;
 class APongPlayer;
+class APongGoal;
 /**
  * 
  */
@@ -23,6 +24,8 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	TSubclassOf<APongPlayer> PlayerType = nullptr;
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	TSubclassOf<APongGoal> GoalBlueprint = nullptr;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	UInputMappingContext* PongMappingContextPlayer1 = nullptr;
@@ -36,5 +39,15 @@ public:
 	
 	virtual void BeginPlay() override;
 
-	
+	void SpawnBall();	
+
+
+private:
+
+	void CreateAdditionalControllers();
+
+	void SpawnPlayers();
+
+	void SpawnGoal(FVector playerLocation, int32 playerId);
+
 };

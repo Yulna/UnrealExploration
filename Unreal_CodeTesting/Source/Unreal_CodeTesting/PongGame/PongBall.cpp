@@ -15,11 +15,11 @@ APongBall::APongBall()
 	BallMesh->SetupAttachment(RootComponent);
 	
 	//BallMesh->OnComponentBeginOverlap.AddUniqueDynamic(this, &APongBall::OnComponentBeginOverlap);
-	BallMesh->OnComponentHit.AddUniqueDynamic(this, &APongBall::OnComponentHit);
+	//BallMesh->OnComponentHit.AddUniqueDynamic(this, &APongBall::OnComponentHit);
 
 	BallMesh->SetCollisionEnabled(ECollisionEnabled::Type::QueryAndPhysics);
-	//BallMesh->SetCollisionProfileName(FName(TEXT("OverlapAll")));
-	BallMesh->SetCollisionProfileName(FName(TEXT("BlockAll")));
+	BallMesh->SetCollisionProfileName(FName(TEXT("OverlapAll")));
+	//BallMesh->SetCollisionProfileName(FName(TEXT("BlockAll")));
 
 }
 
@@ -48,7 +48,6 @@ void APongBall::Tick(float DeltaTime)
 
 
 	AddActorWorldOffset(Direction * Speed);
-
 }
 
 
@@ -78,11 +77,6 @@ void APongBall::OnComponentBeginOverlap(UPrimitiveComponent* OverlappedComponent
 
 	}
 	
-	if (OtherActor->Tags.Contains(FName("Goal")))
-	{
-
-	}
-
 
 	//GEngine->AddOnScreenDebugMessage(-1, 999.0f, FColor::Blue, FString::Printf(TEXT("Normals: x-%.8f y-%.8f z-%.8f"), SweepResult.Normal.X, SweepResult.Normal.Y, SweepResult.Normal.Z));
 	//Direction = SweepResult.Normal;

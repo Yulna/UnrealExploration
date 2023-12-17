@@ -43,6 +43,8 @@ public:
 
 	virtual void BeginPlay() override;
 
+	virtual void PossessedBy(AController* NewController) override;
+
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
@@ -54,5 +56,8 @@ protected:
 
 	void Move(const FInputActionValue& Value);
 
+
+private:
+	void RegisterToScore();
 
 };

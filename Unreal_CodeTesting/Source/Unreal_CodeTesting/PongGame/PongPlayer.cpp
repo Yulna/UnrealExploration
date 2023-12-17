@@ -8,6 +8,9 @@
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "InputActionValue.h"
+#include "Engine/World.h"
+#include "GameFramework/PlayerState.h"
+#include "PongGameState.h"
 
 #include "Kismet/GameplayStatics.h"
 
@@ -19,21 +22,25 @@ APongPlayer::APongPlayer()
 
 	PaddleMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("PlayerPaddle"));
 	PaddleMesh->SetupAttachment(RootComponent);	
-
 }
 
 // Called when the game starts or when spawned
 void APongPlayer::BeginPlay()
 {
 	Super::BeginPlay();
-		
+}
+
+void APongPlayer::PossessedBy(AController* NewController)
+{
+	Super::PossessedBy(NewController);
+
+	RegisterToScore();
 }
 
 // Called every frame
 void APongPlayer::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
 }
 
 // Called to bind functionality to input
@@ -63,6 +70,11 @@ void APongPlayer::Move(const FInputActionValue& Value)
 			AddActorWorldOffset(FVector::ForwardVector * MovementVector.X * Speed);
 		}
 	}
+}
 
+void APongPlayer::RegisterToScore()
+{
+	APongGameState* pongGameState = (APongGameState*)UGameplayStatics::GetGameState(this);
+	pongGameState->RegisterPlayer(GetPlayerState()->GetPlayerId());
 }
 
