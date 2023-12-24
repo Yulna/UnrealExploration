@@ -6,12 +6,16 @@
 #include "Blueprint/UserWidget.h"
 #include "PongHUDGlobalWidget.generated.h"
 
-/**
- * 
- */
+class UPongHUDScore;
+
 UCLASS()
 class UNREAL_CODETESTING_API UPongHUDGlobalWidget : public UUserWidget
 {
 	GENERATED_BODY()
+
+public:
+
+	UPROPERTY(BlueprintReadOnly, meta=(BindWidget))
+	class UPongHUDScore* HUDScore;
 	
 };

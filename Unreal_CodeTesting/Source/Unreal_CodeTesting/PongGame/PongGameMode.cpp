@@ -8,6 +8,8 @@
 #include "GameFramework/PlayerStart.h"
 #include "PongPlayer.h"
 #include "PongGoal.h"
+#include "PongGame/UI/PongHUDGlobalWidget.h"
+#include "PongGame/UI/PongHUDScore.h"
 
 #include "EnhancedInputSubsystems.h"
 
@@ -21,6 +23,7 @@ void APongGameMode::InitGame(const FString& MapName, const FString& Options, FSt
 void APongGameMode::BeginPlay()
 {
 	Super::BeginPlay();	
+	CreateUI();
 	CreateAdditionalControllers();
 	SpawnPlayers();
 }
@@ -29,6 +32,12 @@ void APongGameMode::SpawnBall()
 {
 
 
+}
+
+void APongGameMode::CreateUI()
+{
+	GlobalWidget = CreateWidget<UPongHUDGlobalWidget>(GetWorld(), *GlobalWidgetClass);
+	GlobalWidget->AddToViewport(100);
 }
 
 void APongGameMode::CreateAdditionalControllers()
@@ -76,6 +85,10 @@ void APongGameMode::SpawnPlayers()
 			}
 			PlayerController->Possess(NewPlayer);
 			SpawnGoal(Location, PlayerController->PlayerState->GetPlayerId());
+			if (GlobalWidget)
+			{
+				GlobalWidget->HUDScore->RegisterId(PlayerController->PlayerState->GetPlayerId(), Cast<APlayerStart>(PlayerStarts[i])->PlayerStartTag);
+			}
 		}
 	}
 }

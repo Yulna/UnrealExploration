@@ -9,9 +9,8 @@
 class UInputMappingContext;
 class APongPlayer;
 class APongGoal;
-/**
- * 
- */
+class UPongHUDGlobalWidget;
+
 UCLASS()
 class UNREAL_CODETESTING_API APongGameMode : public AGameMode
 {
@@ -33,6 +32,12 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	UInputMappingContext* PongMappingContextPlayer2 = nullptr;
 
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<UPongHUDGlobalWidget> GlobalWidgetClass = nullptr;
+
+	UPROPERTY(Transient)
+	UPongHUDGlobalWidget* GlobalWidget = nullptr;
+
 public:
 
 	virtual void InitGame(const FString& MapName, const FString& Options, FString& ErrorMessage) override;
@@ -43,6 +48,8 @@ public:
 
 
 private:
+
+	void CreateUI();
 
 	void CreateAdditionalControllers();
 

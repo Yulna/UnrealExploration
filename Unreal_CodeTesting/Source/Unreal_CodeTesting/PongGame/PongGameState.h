@@ -1,14 +1,13 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
 #pragma once
 
 #include "CoreMinimal.h"
 #include "GameFramework/GameStateBase.h"
 #include "PongGameState.generated.h"
 
-/**
- * 
- */
+
+DECLARE_MULTICAST_DELEGATE_TwoParams(FOnScorePoints, int32, int);
+
+
 UCLASS()
 class UNREAL_CODETESTING_API APongGameState : public AGameStateBase
 {
@@ -19,11 +18,12 @@ public:
 	UPROPERTY(VisibleAnywhere)
 	TMap<int32, int> playersPoints;
 
+	FOnScorePoints OnScorePoints;
+
 
 public:
 
 	virtual void HandleBeginPlay();
-
 
 	void RegisterPlayer(int32 playerId);
 

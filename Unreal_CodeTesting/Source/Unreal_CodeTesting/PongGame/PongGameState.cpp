@@ -7,11 +7,6 @@ void APongGameState::HandleBeginPlay()
 {
 	Super::HandleBeginPlay();
 
-
-
-
-	
-
 }
 
 void APongGameState::RegisterPlayer(int32 playerId)
@@ -27,5 +22,6 @@ void APongGameState::ScorePoints(int32 playerId, int points)
 	if (playersPoints.Contains(playerId))
 	{
 		playersPoints[playerId] += points;
+		OnScorePoints.Broadcast(playerId, playersPoints[playerId]);
 	}
 }

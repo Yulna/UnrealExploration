@@ -74,7 +74,7 @@ void APongPlayer::Move(const FInputActionValue& Value)
 
 void APongPlayer::RegisterToScore()
 {
-	APongGameState* pongGameState = (APongGameState*)UGameplayStatics::GetGameState(this);
+	APongGameState* pongGameState = Cast<APongGameState>(UGameplayStatics::GetGameState(this));
 	pongGameState->RegisterPlayer(GetPlayerState()->GetPlayerId());
 }
 

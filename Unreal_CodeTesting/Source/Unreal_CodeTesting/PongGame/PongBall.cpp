@@ -27,18 +27,7 @@ APongBall::APongBall()
 void APongBall::BeginPlay()
 {
 	Super::BeginPlay();
-
-
-	Direction.X = FMath::RandRange(-1, 1);
-	Direction.Y = FMath::RandRange(-1, 1);
-	Direction.Normalize();
-
-	
-	
-
-	//UStaticMeshComponent* mesh = FindComponentByClass<UStaticMeshComponent>();
-	//mesh->OnComponentHit.Add(this, &APongBall::OnComponentHit);
-
+	StartMovement();
 }
 
 // Called every frame
@@ -46,8 +35,29 @@ void APongBall::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	if (ShouldMove)
+	{
+		AddActorWorldOffset(Direction * Speed);
+	}
+}
 
-	AddActorWorldOffset(Direction * Speed);
+// Y - Side
+// X - Up/down
+void APongBall::StartMovement()
+{
+	PickRandomDirection();
+	ShouldMove = true;
+}
+
+void APongBall::PickRandomDirection()
+{
+	int32 Side = FMath::RandRange(0, 1) ? 1 : -1;
+
+	float RandAngle = FMath::RandRange(UE_PI / 16, (15 * UE_PI) / 16);
+	Direction.X = cos(RandAngle);
+	Direction.Y = Side * sin(RandAngle);
+
+	Direction.Normalize();
 }
 
 

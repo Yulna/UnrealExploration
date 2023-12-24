@@ -18,6 +18,9 @@ public:
 	UPROPERTY(VisibleAnywhere, Category = "GameData|Debug")
 	FVector Direction = FVector::ZeroVector;
 
+	UPROPERTY(VisibleAnywhere, Category = "GameData|Debug")
+	bool ShouldMove = false;
+
 	UPROPERTY(EditAnywhere, Category = "GameData")
 	float Speed = 0.0f;
 
@@ -32,6 +35,11 @@ public:
 
 	virtual void Tick(float DeltaTime) override;
 
+	void StartMovement();
+
+	void PickRandomDirection();
+
+	void ResetBall();
 
 private:
 
