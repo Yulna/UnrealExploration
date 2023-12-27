@@ -84,7 +84,7 @@ void APongGameMode::SpawnPlayers()
 				}
 			}
 			PlayerController->Possess(NewPlayer);
-			SpawnGoal(Location, PlayerController->PlayerState->GetPlayerId());
+			SpawnGoal(Location, PlayerController->PlayerState->GetPlayerId(), Cast<APlayerStart>(PlayerStarts[i])->PlayerStartTag);
 			if (GlobalWidget)
 			{
 				GlobalWidget->HUDScore->RegisterId(PlayerController->PlayerState->GetPlayerId(), Cast<APlayerStart>(PlayerStarts[i])->PlayerStartTag);
@@ -93,9 +93,22 @@ void APongGameMode::SpawnPlayers()
 	}
 }
 
-void APongGameMode::SpawnGoal(FVector playerLocation, int32 playerId)
+void APongGameMode::SpawnGoal(FVector PlayerLocation, int32 PlayerId, FName PlayerTag)
 {
-	FVector SpawnLocation = playerLocation;	
-	APongGoal* NewGoal = GetWorld()->SpawnActor<APongGoal>(GoalBlueprint, playerLocation, FRotator::ZeroRotator);
-	NewGoal->PlayerId = playerId;
+	FVector SpawnLocation = DisplacePlayerGoal(PlayerLocation, PlayerTag);	
+	APongGoal* NewGoal = GetWorld()->SpawnActor<APongGoal>(GoalBlueprint, SpawnLocation, FRotator::ZeroRotator);
+	NewGoal->PlayerId = PlayerId;
+}
+
+FVector APongGameMode::DisplacePlayerGoal(FVector Location, FName PlayerTag)
+{
+	if (PlayerTag == "Player1")
+	{
+		Location.Y -= GoalDisplacement;
+	}
+	if (PlayerTag == "Player2")
+	{
+		Location.Y += GoalDisplacement;
+	}
+	return Location;
 }

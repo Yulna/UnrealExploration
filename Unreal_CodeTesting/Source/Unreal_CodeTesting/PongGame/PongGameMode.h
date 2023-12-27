@@ -21,6 +21,9 @@ public:
 	int32 PlayersNum = 2;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	float GoalDisplacement = 100;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	TSubclassOf<APongPlayer> PlayerType = nullptr;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
@@ -55,6 +58,7 @@ private:
 
 	void SpawnPlayers();
 
-	void SpawnGoal(FVector playerLocation, int32 playerId);
+	void SpawnGoal(FVector PlayerLocation, int32 PlayerId, FName PlayerTag);
 
+	FVector DisplacePlayerGoal(FVector Location, FName PlayerTag);
 };
