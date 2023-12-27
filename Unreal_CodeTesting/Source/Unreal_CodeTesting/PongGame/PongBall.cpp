@@ -27,7 +27,7 @@ APongBall::APongBall()
 void APongBall::BeginPlay()
 {
 	Super::BeginPlay();
-	StartMovement();
+	StartMovementDelayed(StartDelay);
 }
 
 // Called every frame
@@ -49,6 +49,14 @@ void APongBall::StartMovement()
 	ShouldMove = true;
 }
 
+void APongBall::StartMovementDelayed(float Delay)
+{
+	FTimerHandle TimerHandle;
+	GetWorld()->GetTimerManager().SetTimer(TimerHandle, [&]() {
+		StartMovement();
+		}, Delay, false);
+}
+
 void APongBall::PickRandomDirection()
 {
 	int32 Side = FMath::RandRange(0, 1) ? 1 : -1;
@@ -58,6 +66,13 @@ void APongBall::PickRandomDirection()
 	Direction.Y = Side * sin(RandAngle);
 
 	Direction.Normalize();
+}
+
+void APongBall::ResetBall()
+{
+	SetActorLocation(FVector::ZeroVector);
+	ShouldMove = false;
+	StartMovementDelayed(StartDelay); 
 }
 
 
@@ -84,9 +99,12 @@ void APongBall::OnComponentBeginOverlap(UPrimitiveComponent* OverlappedComponent
 	{
 		GEngine->AddOnScreenDebugMessage(-1, 1.0f, FColor::Red, TEXT("Player hit"));
 		Direction.Y *= -1;
-
 	}
 	
+	if (OtherActor->Tags.Contains(FName("Goal")))
+	{
+		ResetBall();
+	}
 
 	//GEngine->AddOnScreenDebugMessage(-1, 999.0f, FColor::Blue, FString::Printf(TEXT("Normals: x-%.8f y-%.8f z-%.8f"), SweepResult.Normal.X, SweepResult.Normal.Y, SweepResult.Normal.Z));
 	//Direction = SweepResult.Normal;

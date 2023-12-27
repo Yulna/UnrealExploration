@@ -22,6 +22,9 @@ public:
 	bool ShouldMove = false;
 
 	UPROPERTY(EditAnywhere, Category = "GameData")
+	float StartDelay = 3.0f;
+
+	UPROPERTY(EditAnywhere, Category = "GameData")
 	float Speed = 0.0f;
 
 	UPROPERTY(VisibleAnywhere)
@@ -36,6 +39,8 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 	void StartMovement();
+
+	void StartMovementDelayed(float Delay);
 
 	void PickRandomDirection();
 
