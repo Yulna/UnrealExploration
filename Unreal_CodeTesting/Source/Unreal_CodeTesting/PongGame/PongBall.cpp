@@ -14,11 +14,12 @@ APongBall::APongBall()
 	BallMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("BallMesh"));
 	BallMesh->SetupAttachment(RootComponent);
 	
-	//BallMesh->OnComponentBeginOverlap.AddUniqueDynamic(this, &APongBall::OnComponentBeginOverlap);
+	BallMesh->OnComponentBeginOverlap.AddUniqueDynamic(this, &APongBall::OnComponentBeginOverlap);
 	//BallMesh->OnComponentHit.AddUniqueDynamic(this, &APongBall::OnComponentHit);
 
 	BallMesh->SetCollisionEnabled(ECollisionEnabled::Type::QueryAndPhysics);
 	BallMesh->SetCollisionProfileName(FName(TEXT("OverlapAll")));
+	BallMesh->SetCollisionObjectType(ECollisionChannel::ECC_WorldDynamic);
 	//BallMesh->SetCollisionProfileName(FName(TEXT("BlockAll")));
 
 }
@@ -37,7 +38,7 @@ void APongBall::Tick(float DeltaTime)
 
 	if (ShouldMove)
 	{
-		AddActorWorldOffset(Direction * Speed);
+		AddActorWorldOffset(Direction * Speed, true);
 	}
 }
 
@@ -95,10 +96,14 @@ void APongBall::OnComponentBeginOverlap(UPrimitiveComponent* OverlappedComponent
 
 	GEngine->AddOnScreenDebugMessage(-1, 1.0f, FColor::Purple, TEXT("Bouncing"));
 
+
 	if (OtherActor->Tags.Contains(FName("Player")))
 	{
 		GEngine->AddOnScreenDebugMessage(-1, 1.0f, FColor::Red, TEXT("Player hit"));
-		Direction.Y *= -1;
+		
+		Direction = CalculateDirectionChange(OtherActor, SweepResult.ImpactPoint);
+		//Direction.Y *= -1;
+		return;
 	}
 	
 	if (OtherActor->Tags.Contains(FName("Goal")))
@@ -106,9 +111,43 @@ void APongBall::OnComponentBeginOverlap(UPrimitiveComponent* OverlappedComponent
 		ResetBall();
 	}
 
-	//GEngine->AddOnScreenDebugMessage(-1, 999.0f, FColor::Blue, FString::Printf(TEXT("Normals: x-%.8f y-%.8f z-%.8f"), SweepResult.Normal.X, SweepResult.Normal.Y, SweepResult.Normal.Z));
-	//Direction = SweepResult.Normal;
-
 	Direction.X *= -1;
+}
+
+FVector APongBall::CalculateDirectionChange(AActor* PlayerActor, FVector ImpactPoint)
+{
+	FVector NewDirection = FVector::ZeroVector;
+
+	FBox BoudingBox = PlayerActor->GetComponentsBoundingBox();
+	FVector Center = BoudingBox.GetCenter();
+	FVector Extends = BoudingBox.GetExtent();
+	GEngine->AddOnScreenDebugMessage(-1, 999.0f, FColor::Orange, FString::Printf(TEXT("ImpactPoint: %f | %f | %f"), ImpactPoint.X, ImpactPoint.Y, ImpactPoint.Z));
+
+	float DistanceX = abs(Center.X - ImpactPoint.X);
+	float Percentile = (Extends.X - DistanceX) / Extends.X;
+
+
+	float Angle = (UE_PI / 8) + (((UE_PI * .5f) - (UE_PI / 8)) * Percentile);
+
+	//Invert angle in Y axis
+	/*if (ImpactPoint.X < Center.X)
+	{
+		Angle = UE_PI - Angle;
+	}*/
+
+	int sign = (Direction.Y > 0) ? 1 : -1;
+	GEngine->AddOnScreenDebugMessage(-1, 999.0f, FColor::Orange, FString::Printf(TEXT("Percentile: %f"), Percentile));
+
+	GEngine->AddOnScreenDebugMessage(-1, 999.0f, FColor::Orange, FString::Printf(TEXT("Angle: %frad  -  %fdeg"), Angle, (Angle*180)/UE_PI));
+
+	GEngine->AddOnScreenDebugMessage(-1, 999.0f, FColor::Orange, FString::Printf(TEXT("Direction Y: %f"), Direction.Y));
+
+	GEngine->AddOnScreenDebugMessage(-1, 999.0f, FColor::Orange, FString::Printf(TEXT("Y Sign: %i"), sign));
+
+	NewDirection.X = cos(Angle) /* (Percentile > .9) ? -1 : 1*/;
+	NewDirection.Y = sin(Angle) * (Direction.Y > 0) ? -1 : 1;
+	NewDirection.Normalize();
+
+	return NewDirection;
 }
 

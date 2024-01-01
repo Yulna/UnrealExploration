@@ -22,6 +22,8 @@ APongPlayer::APongPlayer()
 
 	PaddleMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("PlayerPaddle"));
 	PaddleMesh->SetupAttachment(RootComponent);	
+
+	PaddleMesh->SetCollisionObjectType(ECollisionChannel::ECC_WorldDynamic);
 }
 
 // Called when the game starts or when spawned
